@@ -9,7 +9,7 @@
 
 
 ### 项目设计图
-(项目设计图)[/img/1.jpg]
+[项目设计图](/img/1.jpg)
 
 ### 怎么用
 
@@ -33,7 +33,9 @@ shero-cli publish [blogName]
 - [ ] 支持博客头部和尾部使用模板
 - [ ] 支持博客分类
 
-### 参考
+### 参考文章
 [nodejs api 官网](http://nodejs.cn/api/fs.html#fs_fs_readfile_path_options_callback)
+
 [关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)
-封装了github api => [octokit](https://octokit.github.io/rest.js/v18#issues-create)
+
+封装好了的github api => [octokit](https://octokit.github.io/rest.js/v18#issues-create)
