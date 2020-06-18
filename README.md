@@ -1,26 +1,38 @@
-### shero-cli 使用说明
+#### shero-cli 使用说明
 
 ### shero-cli是什么？
 很多程序员平时喜欢使用git的issue来编写博客，因为issue里的comment部分能够提供一个作者和读者之间沟通讨论的平台。但是使用issue编写博客的话，涉及到博客内容和issue直接的关系需要维护，作者需要自己维护一个博客仓库，然后在博客完成后再复制到issue。
 为了让利用github的issue来开发博客变得更加愉快，就开发了shero-cli这款工具。主要提供的功能有：
 - 命令行式创建博客
 - 命令行式发布博客
-- 将仓库里的md文件生成目录列表，降低维护成功
+- 将仓库里的md文件生成目录列表，降低维护成本
 
 
 ### 项目设计图
-[项目设计图](/img/1.jpg)
+![项目设计图](./img/1.jpg)
 
 ### 怎么用
 
-**创建一篇博客**
+**1. shero-cli安装**
+```shell
+npm install shero-cli -g
+```
+
+**2. shero-cli初始化**
+```shell
+shero-cli init
+```
+需要根据提示输入用户名，仓库名和token。
+token的获取请参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。先在页面中生成对应的token，在拷贝到命令行中。
+
+**3. 创建一篇博客**
 ```shell
 shero-cli create <blogName>
 ```
 - 注意blogName就是博客名称，也会作为issue的标题展示
 - blogName是必填项，.md后缀可不填，默认生成md文件
 
-**发布或更新一篇博客**
+**4. 发布或更新一篇博客**
 ```shell
 shero-cli publish [blogName]
 ```

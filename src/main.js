@@ -1,15 +1,34 @@
 const program = require('commander')
-const chalk = require('chalk')
 const path = require('path')
 const { Octokit } = require("@octokit/rest")
-// var promise = require('bluebird')
 const fs = require('fs')
-const octokit = new Octokit({
-    auth: '668cd21174ae3397cbc87e279c219b09a8d21361'
-})
+const create = require('./create')
+const init = require('./init')
 const FILE_MAP = 'map.json'
+const {chalkSuccess, chalkError} = require('./util')
+const {readConfig} = require('./config')
+const {version} = require('./constants')
+// 设置github的token
+const config = readConfig()
+const octokit = new Octokit({
+    auth: config.token || null
+})
 
 const actionsMap = {
+    'init': {
+        alias: 'i',
+        description: 'init github info, includes authname, project name and token',
+        examples: [
+            'shero-cli init',
+        ],
+    },
+    'config': {
+        alias: 'c',
+        description: 'set the config',
+        examples: [
+            'shero-cli config',
+        ],
+    },
     'create <textName>': {
         alias: 'c',
         description: 'create a markdown file',
@@ -17,11 +36,11 @@ const actionsMap = {
             'shero-cli create <project-name>',
         ],
     },
-    'publish [textName]': {
+    'publish <textName>': {
         alias: 'c',
-        description: 'create a markdown file',
+        description: 'publish a markdown file',
         examples: [
-            'shero-cli create <project-name>',
+            'shero-cli publish <project-name>',
         ],
     },
     '*': {
@@ -29,54 +48,6 @@ const actionsMap = {
         description: 'command is not found',
         examples: [],
     },
-}
-
-const chalkSuccess = (...argv) => console.log(chalk.green(argv.reduce((prev, next) => (prev + next) , '')))
-const chalkError = (...argv) => console.log(chalk.red(argv.reduce((prev, next) => (prev + next) , '')))
-
-
-const create = function (textName) {
-    fs.stat(FILE_MAP,function(error,stats){
-        if (stats && stats.isFile()) {
-            // 存在map.json配置文件
-            fs.readFile(path.resolve(FILE_MAP),'utf8', (err, data) => {
-                if(error){
-                    chalkError(error)
-                    return false
-                }
-                let map = JSON.parse(data)
-                if (map[textName]) {
-                    // 存在此文件的索引
-                    return chalkError('This file is already exits, please change the name!')
-                } else {
-                    // 不存在此文件索引，认为文件不存在，新建文件
-                    fs.writeFile(textName,'','utf8',function(error){
-                        if(error){
-                            chalkError(error)
-                            return false
-                        }
-                        chalkSuccess(`Create the file ${textName} succeed!`)
-                    })
-                }
-                map[textName] = ""
-                fs.writeFile(FILE_MAP,JSON.stringify(map),'utf8',function(error){
-                    if(error){
-                        chalkError(error)
-                        return false
-                    }
-                })
-            })
-        } else {
-            // 不存在map.json配置文件
-            fs.writeFile(FILE_MAP,`{"${textName}":""}`,'utf8',function(error){
-                if(error){
-                    chalkError(error)
-                    return false
-                }
-                create(textName)
-            })
-        }
-    })
 }
 
 
@@ -88,16 +59,18 @@ Reflect.ownKeys(actionsMap).forEach(action => {
             if (action === '*') {
                 chalkError('Invalid command, please use shero-cli --help')
             } else {
-                console.log('create')
-                if (textName.indexOf('.') === -1) {
+                if (typeof textName === 'string' && textName.indexOf('.') === -1) {
                     textName += '.md'
                 } 
+                if (action === 'init') {
+                    init()
+                }
                 // 创建md文件
-                if (action === 'create <textName>') {
+                else if (action === 'create <textName>') {
                     create(textName)
                 } 
                 // 读取md文件，上传github生成新的issue
-                else if (action === 'publish [textName]') {
+                else if (action === 'publish <textName>') {
                     fs.readFile(path.resolve(FILE_MAP),'utf8', (err, data) => {
                         if (err) {
                             chalkError(err)
@@ -107,22 +80,27 @@ Reflect.ownKeys(actionsMap).forEach(action => {
                             // 修改issue
                             let number = map[textName]
                             fs.readFile(path.resolve(textName),'utf8', (err, data) => {
-                                console.log('data:', typeof data)
                                 octokit.issues.update({
-                                    owner: 'kinyaying',
-                                    repo: 'Blog',
+                                    owner: config.name,
+                                    repo: config.projectName,
                                     issue_number: number,
                                     body: data
+                                }).then(res => {
+                                    chalkSuccess('publish succeed')
+                                }).catch(err => {
+                                    chalkError('publish failed, error info: ', err.name)
                                 });
                             })
-                            
                         } else {
                             // 创建issue
                             fs.readFile(path.resolve(textName),'utf8', (err, data) => {
+                                if (err) {
+                                    return chalkError('publish failed, error info: ', err)
+                                }
                                 octokit.issues.create({
-                                    owner: 'kinyaying',
-                                    repo: 'Blog',
-                                    title: textName,
+                                    owner: config.name,
+                                    repo: config.projectName,
+                                    title: textName.split('.')[0],
                                     body: data
                                 }).then(res => {
                                     chalkSuccess('publish succeed')
@@ -136,8 +114,7 @@ Reflect.ownKeys(actionsMap).forEach(action => {
                                         }
                                     })
                                     fs.readFile(path.resolve('README.md'),'utf8', (err, data) => {
-                                        console.log('data:', data)
-                                        data += `[${textName}](https://github.com/kinyaying/Blog/issues/${number})`
+                                        data += `  [${textName}](https://github.com/${config.name}/${config.projectName}/issues/${number})`
                                         fs.writeFile('README.md', data, 'utf8',function(error){
                                             if(error){
                                                 chalkError(error)
@@ -146,18 +123,15 @@ Reflect.ownKeys(actionsMap).forEach(action => {
                                         })
                                     })
                                 }).catch(err => {
-                                    chalkError('publish failed, error: ', err.name)
+                                    chalkError('publish failed, error info: ', err.name)
                                 })
                             })
                         }
-                      });
-                    
+                    });
                 }
             }
         })
 })
 
-
-
 // 解析用户传过来的参数
-program.version('1.0.0').parse(process.argv)
+program.version(version).parse(process.argv)
