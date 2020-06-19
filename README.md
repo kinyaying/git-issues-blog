@@ -19,6 +19,7 @@ npm install git-issues-blog -g
 ```
 
 **2. 进入本地的博客仓库**
+
 因为创建博客仓库是低频操作，shero-cli暂时不支持命令行创建github的博客仓库，请先在github上创建下。
 
 **3. shero-cli初始化**
