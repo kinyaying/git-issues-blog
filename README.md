@@ -9,7 +9,7 @@
 
 
 ### 项目设计图
-![项目设计图](/kinyaying/git-issues-blog/blob/master/img/1.png?raw=true)
+![项目设计图](https://raw.githubusercontent.com/kinyaying/git-issues-blog/master/img/1.png)
 
 ### 怎么用
 
@@ -27,8 +27,12 @@ shero-cli init
 ```
 需要根据提示输入用户名(github的用户名)，仓库名(博客的仓库名)和token。
 由于shero-cli需要去创建github仓库的issue，需要token才能有权限。token的获取方式如下：
+![项目设计图](https://raw.githubusercontent.com/kinyaying/git-issues-blog/master/img/2.png)
+![项目设计图](https://raw.githubusercontent.com/kinyaying/git-issues-blog/master/img/3.png)
+![项目设计图](https://raw.githubusercontent.com/kinyaying/git-issues-blog/master/img/4.png)
+这个 token 只会出现一次,请点击复制保存下来.
 
-token的获取更详细的内容可以参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。先在页面中生成对应的token，在拷贝到命令行中。
+向了解token更多的内容可以参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。
 
 **4. 创建一篇博客**
 ```shell
