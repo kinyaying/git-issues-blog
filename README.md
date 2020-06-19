@@ -9,30 +9,35 @@
 
 
 ### 项目设计图
-![项目设计图](./img/1.jpg)
+![项目设计图](/kinyaying/git-issues-blog/blob/master/img/1.png?raw=true)
 
 ### 怎么用
 
 **1. shero-cli安装**
 ```shell
-npm install shero-cli -g
+npm install git-issues-blog -g
 ```
 
-**2. shero-cli初始化**
+**2. 进入本地的博客仓库**
+因为创建博客仓库是低频操作，shero-cli暂时不支持命令行创建github的博客仓库，请先在github上创建下。
+
+**3. shero-cli初始化**
 ```shell
 shero-cli init
 ```
-需要根据提示输入用户名，仓库名和token。
-token的获取请参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。先在页面中生成对应的token，在拷贝到命令行中。
+需要根据提示输入用户名(github的用户名)，仓库名(博客的仓库名)和token。
+由于shero-cli需要去创建github仓库的issue，需要token才能有权限。token的获取方式如下：
 
-**3. 创建一篇博客**
+token的获取更详细的内容可以参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。先在页面中生成对应的token，在拷贝到命令行中。
+
+**4. 创建一篇博客**
 ```shell
 shero-cli create <blogName>
 ```
 - 注意blogName就是博客名称，也会作为issue的标题展示
 - blogName是必填项，.md后缀可不填，默认生成md文件
 
-**4. 发布或更新一篇博客**
+**5. 发布或更新一篇博客**
 ```shell
 shero-cli publish [blogName]
 ```
@@ -44,6 +49,7 @@ shero-cli publish [blogName]
 - [ ] shero-cli delete [blogName] (博客的删除)
 - [ ] 支持博客头部和尾部使用模板
 - [ ] 支持博客分类
+- [ ] 探索打通掘金，简书等博客平台，实现一键publish
 
 ### 参考文章
 [nodejs api 官网](http://nodejs.cn/api/fs.html#fs_fs_readfile_path_options_callback)

@@ -125,7 +125,7 @@ Reflect.ownKeys(actionsMap).forEach(function (action) {
                                             });
                                         });
                                     }).catch(function (err) {
-                                        chalkError('publish failed, error info: ', err.name);
+                                        chalkError('publish failed, error info: ', err);
                                     });
                                 });
                             }

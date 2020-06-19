@@ -123,7 +123,7 @@ Reflect.ownKeys(actionsMap).forEach(action => {
                                         })
                                     })
                                 }).catch(err => {
-                                    chalkError('publish failed, error info: ', err.name)
+                                    chalkError('publish failed, error info: ', err);
                                 })
                             })
                         }
