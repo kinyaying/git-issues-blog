@@ -32,7 +32,7 @@ shero-cli init
 ![项目设计图](https://raw.githubusercontent.com/kinyaying/git-issues-blog/master/img/4.png)
 这个 token 只会出现一次,请点击复制保存下来.
 
-向了解token更多的内容可以参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。
+想了解token更多的内容可以参考这篇文章[关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)。
 
 **4. 创建一篇博客**
 ```shell
@@ -43,9 +43,9 @@ shero-cli create <blogName>
 
 **5. 发布或更新一篇博客**
 ```shell
-shero-cli publish [blogName]
+shero-cli publish <blogName>
 ```
-**shero-cli**自动识别publish的博客是否存在，存在的话就是更新博客，不存在就新建博客。
+**shero-cli**自动识别publish的博客对应的issue是否存在，存在的话就是更新issue，不存在就新建issue。
 
 ### TODO list
 这个工具我是先开发一个版本，有的功能还要继续的新增和完善。也欢迎rd朋友提出自己的想法和建议，甚至参与到这个工具的开发中。
@@ -60,4 +60,4 @@ shero-cli publish [blogName]
 
 [关于获取git的token](https://dev.to/gr2m/github-api-authentication-personal-access-tokens-53kd)
 
-封装好了的github api => [octokit](https://octokit.github.io/rest.js/v18#issues-create)
+封装好了的github api 库：[octokit](https://octokit.github.io/rest.js/v18#issues-create)
