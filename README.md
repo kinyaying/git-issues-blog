@@ -15,7 +15,7 @@
 
 **1. shero-cli安装**
 ```shell
-npm install git-issues-blog -g
+npm install shero-cli -g
 ```
 
 **2. 进入本地的博客仓库**

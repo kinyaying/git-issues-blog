@@ -1,6 +1,6 @@
 {
-  "name": "git-issues-blog",
-  "version": "1.0.1",
+  "name": "shero-cli",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
